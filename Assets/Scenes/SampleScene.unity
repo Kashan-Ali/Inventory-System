@@ -247,6 +247,9 @@ MonoBehaviour:
   rarity: 1
   weightKg: 0
   valueCost: 0
+  _addMultiTimes: 0
+  _destroyItemAterInteract: 0
+  _interactOutsideInventory: 0
 --- !u!1 &117117005
 GameObject:
   m_ObjectHideFlags: 0
@@ -675,6 +678,9 @@ MonoBehaviour:
   rarity: 2
   weightKg: 3
   valueCost: 15
+  _addMultiTimes: 0
+  _destroyItemAterInteract: 0
+  _interactOutsideInventory: 0
 --- !u!1 &375746617
 GameObject:
   m_ObjectHideFlags: 0
@@ -807,7 +813,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &438920479
 Transform:
   m_ObjectHideFlags: 0
@@ -839,6 +845,9 @@ MonoBehaviour:
   rarity: 0
   weightKg: 1
   valueCost: 5
+  _addMultiTimes: 0
+  _destroyItemAterInteract: 0
+  _interactOutsideInventory: 0
 --- !u!1 &556302943
 GameObject:
   m_ObjectHideFlags: 0
@@ -887,6 +896,9 @@ MonoBehaviour:
   rarity: 2
   weightKg: 2
   valueCost: 30
+  _addMultiTimes: 0
+  _destroyItemAterInteract: 0
+  _interactOutsideInventory: 0
 --- !u!1 &603539136
 GameObject:
   m_ObjectHideFlags: 0
@@ -903,7 +915,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &603539137
 Transform:
   m_ObjectHideFlags: 0
@@ -935,6 +947,9 @@ MonoBehaviour:
   rarity: 1
   weightKg: 2
   valueCost: 10
+  _addMultiTimes: 0
+  _destroyItemAterInteract: 0
+  _interactOutsideInventory: 0
 --- !u!1 &661941331
 GameObject:
   m_ObjectHideFlags: 0
@@ -1059,7 +1074,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &663765071
 Transform:
   m_ObjectHideFlags: 0
@@ -1091,6 +1106,9 @@ MonoBehaviour:
   rarity: 0
   weightKg: 0
   valueCost: 0
+  _addMultiTimes: 0
+  _destroyItemAterInteract: 0
+  _interactOutsideInventory: 0
 --- !u!1 &667174121
 GameObject:
   m_ObjectHideFlags: 0
@@ -2541,6 +2559,9 @@ MonoBehaviour:
   rarity: 1
   weightKg: 2
   valueCost: 20
+  _addMultiTimes: 0
+  _destroyItemAterInteract: 0
+  _interactOutsideInventory: 0
 --- !u!1 &1605479534
 GameObject:
   m_ObjectHideFlags: 0
@@ -2709,7 +2730,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1649021975
 Transform:
   m_ObjectHideFlags: 0
@@ -2741,6 +2762,9 @@ MonoBehaviour:
   rarity: 0
   weightKg: 1
   valueCost: 10
+  _addMultiTimes: 0
+  _destroyItemAterInteract: 0
+  _interactOutsideInventory: 0
 --- !u!1 &1665841582
 GameObject:
   m_ObjectHideFlags: 0
@@ -2789,6 +2813,9 @@ MonoBehaviour:
   rarity: 2
   weightKg: 0
   valueCost: 0
+  _addMultiTimes: 0
+  _destroyItemAterInteract: 0
+  _interactOutsideInventory: 0
 --- !u!1 &1701430713
 GameObject:
   m_ObjectHideFlags: 0

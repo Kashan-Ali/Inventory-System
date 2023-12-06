@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 
 
 public enum ItemType { Consumable, Equipment, QuestItem }
@@ -110,7 +109,7 @@ public class InventoryManager : MonoBehaviour
     }
 
 
-    public void AddItem(string itemType, string rarity, int weightKg, int valueCost)
+    public void AddItemInInventory(string itemType, string rarity, int weightKg, int valueCost)
     {
         InventoryItem newItem = new InventoryItem()
         {
@@ -125,12 +124,9 @@ public class InventoryManager : MonoBehaviour
         SaveInventory();
     }
 
-    public void RemoveItem(string itemType, string rarity, int weightKg, int valueCost)
+    public void RemoveItemFromInventory(string itemTypeStr, string rarityStr, int weightKg, int valueCost)
     {
-        // Find the item in the inventory
-        InventoryItem itemToRemove = inventoryItems.Find(
-            item => (item.itemTypeStr == itemType && item.rarityStr == rarity && item.weightKg == weightKg && item.valueCost == valueCost)
-        );
+        InventoryItem itemToRemove = FindItemInList(itemTypeStr, rarityStr, weightKg, valueCost);
 
         // Remove the item if found
         if (itemToRemove != null)
@@ -138,5 +134,13 @@ public class InventoryManager : MonoBehaviour
             inventoryItems.Remove(itemToRemove);
             SaveInventory();
         }
+    }
+
+    public InventoryItem FindItemInList(string itemTypeStr, string rarityStr, int weightKg, int valueCost)
+    {
+        // Find the item in the inventory
+        return inventoryItems.Find(
+            item => (item.itemTypeStr == itemTypeStr && item.rarityStr == rarityStr && item.weightKg == weightKg && item.valueCost == valueCost)
+        );
     }
 }

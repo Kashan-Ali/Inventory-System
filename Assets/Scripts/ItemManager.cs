@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class ItemManager : MonoBehaviour
 {
     public ItemType itemType;
@@ -11,10 +10,30 @@ public class ItemManager : MonoBehaviour
     public int weightKg;
     public int valueCost;
 
+
+    enum MultipleAdded { Yes, No }
+    [SerializeField] MultipleAdded _addMultiTimes;
+    enum DestroyItemAterInteract { No, Yes }
+    [SerializeField] DestroyItemAterInteract _destroyItemAterInteract;
+    enum InteractOutsideInventory { No, Yes }
+    [SerializeField] InteractOutsideInventory _interactOutsideInventory;
+
+    //  private Canditions fields.
+    [SerializeField] bool _itemAdded = false;
+    [SerializeField] bool _itemEquipped = false;
+
+    //  private item category fields.
     string itemTypeStr;
     string rarityStr;
-    
-    bool _itemAdded = false;
+
+    private void OnEnable()
+    {
+        if (_addMultiTimes == MultipleAdded.Yes)
+            _destroyItemAterInteract = DestroyItemAterInteract.No;
+
+        if (_destroyItemAterInteract == DestroyItemAterInteract.Yes)
+            _addMultiTimes = MultipleAdded.No;
+    }
 
     private void Update()
     {
@@ -23,8 +42,18 @@ public class ItemManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E))
             RemoveItem();
+
+        if (Input.GetKeyDown(KeyCode.C))
+            ConsumeItem();
+
+        if (Input.GetKeyDown(KeyCode.X))
+            EquipItem();
+
+        if (Input.GetKeyDown(KeyCode.Z))
+            UseItem();
     }
 
+    
     void AssignItemTypeAndRarity()
     {
         switch (itemType)
@@ -60,29 +89,45 @@ public class ItemManager : MonoBehaviour
 
     public void AddItem()
     {
-        if (_itemAdded)
+        if (_addMultiTimes == MultipleAdded.No && _itemAdded == true)
             return;
 
-        AssignItemTypeAndRarity();
-
         _itemAdded = true;
-        InventoryManager.Instance.AddItem(itemTypeStr, rarityStr, weightKg, valueCost);
 
+        AssignItemTypeAndRarity();
+        InventoryManager.Instance.AddItemInInventory(itemTypeStr, rarityStr, weightKg, valueCost);
+
+        if (_destroyItemAterInteract == DestroyItemAterInteract.Yes && _addMultiTimes == MultipleAdded.No)
+            Destroy(gameObject);
     }
 
     public void RemoveItem()
     {
-        AssignItemTypeAndRarity();
+        if (itemType == ItemType.Equipment && _itemEquipped == true)
+            return;
 
-        InventoryManager.Instance.RemoveItem(itemTypeStr, rarityStr, weightKg, valueCost);
+        AssignItemTypeAndRarity();
+        InventoryManager.Instance.RemoveItemFromInventory(itemTypeStr, rarityStr, weightKg, valueCost);
     }
 
     public void ConsumeItem()
     {
+        if (_interactOutsideInventory == InteractOutsideInventory.No)
+        {
+            // Find the item in the inventory
+            InventoryItem item = InventoryManager.Instance.FindItemInList(itemTypeStr, rarityStr, weightKg, valueCost);
+
+            // terminating method execution.
+            if (item == null)
+                return;
+        }
+
+
         if (itemType != ItemType.Consumable)
             return;
 
         AssignItemTypeAndRarity();
+
 
         // code underneath from here.
 
@@ -93,12 +138,15 @@ public class ItemManager : MonoBehaviour
         // end your code above.
 
         RemoveItem();
+        if (_destroyItemAterInteract == DestroyItemAterInteract.Yes)
+            Destroy(gameObject);
     }
 
     public void EquipItem()
     {
-        if (itemType != ItemType.Consumable)
+        if (itemType != ItemType.Equipment)
             return;
+        _itemEquipped = true;
 
         AssignItemTypeAndRarity();
 
@@ -127,5 +175,7 @@ public class ItemManager : MonoBehaviour
         // end your code above.
 
         RemoveItem();
+        if (_destroyItemAterInteract == DestroyItemAterInteract.Yes)
+            Destroy(gameObject);
     }
 }
