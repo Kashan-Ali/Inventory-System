@@ -99,6 +99,13 @@ public class ItemManager : MonoBehaviour
     public void RemoveItem()
     {
         AssignItemTypeAndRarity();
+
+
+        int equippedItemCount = InventoryManager.Instance.CountSameItem(_itemTypeStr, _rarityStr, _weightKg, _valueCost);
+
+        if (_itemType == ItemType.Equipment && equippedItemCount == 1 && _itemEquipped)
+            return;
+
         InventoryManager.Instance.RemoveItemFromInventory(_itemTypeStr, _rarityStr, _weightKg, _valueCost);
     }
 
