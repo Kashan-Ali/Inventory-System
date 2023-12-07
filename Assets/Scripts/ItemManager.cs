@@ -25,7 +25,7 @@ public class ItemManager : MonoBehaviour
     public int ValueCost { get { return _valueCost; } }
 
     //  private Canditions fields.
-    [SerializeField] bool _itemAdded = false;
+    bool _itemAdded = false;
     [SerializeField] bool _itemEquipped = false;
 
     //  Main item category Input fields.

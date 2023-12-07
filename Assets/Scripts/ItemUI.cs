@@ -16,7 +16,7 @@ public class ItemUI : MonoBehaviour
     [SerializeField] TextMeshProUGUI _itemValueTmp;
 
     //  Main components.
-    [SerializeField] ItemManager _itemManager;
+    ItemManager _itemManager;
 
     //  Main input.
     int _countResult;
