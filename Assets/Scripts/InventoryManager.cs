@@ -2,7 +2,6 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.IO;
 
-
 public enum ItemType { Consumable, Equipment, QuestItem }
 public enum Rarity { Common, Rare, Legendary }
 
@@ -24,6 +23,26 @@ public class InventoryManager : MonoBehaviour
 
     //  Our Item Inventory list.
     public List<InventoryItem> inventoryItems;
+
+    /*
+    //  Filter invenmtory items by Types.
+    public int totalConsumable = 0;
+    public int totalEquipment = 0;
+    public int totalQuestItem = 0;
+
+    //  Sort Consumables by Categories.
+    public int consumableCommons = 0;
+    public int consumableRares = 0;
+    public int consumableLegendaries = 0;
+    //  Sort Consumables by Categories.
+    public int EquipmentCommons = 0;
+    public int EquipmenteRares = 0;
+    public int EquipmentLegendaries = 0;
+    //  Sort Consumables by Categories.
+    public int QuestItemCommons = 0;
+    public int QuestItemRares = 0;
+    public int QuestItemLegendaries = 0;
+    */
 
     // File path to save and load the item list
     private string filePath;
@@ -103,4 +122,19 @@ public class InventoryManager : MonoBehaviour
             item => (item.itemTypeStr == itemTypeStr && item.rarityStr == rarityStr && item.weightKg == weightKg && item.valueCost == valueCost)
         );
     }
+
+    // return result count of any filtered item from inventory by its category.
+    public int CountItemCategory(string itemTypeStr, string rarityStr)
+    {
+        int count = 0;
+        foreach (var item in inventoryItems)
+        {
+            if (item.itemTypeStr == itemTypeStr && item.rarityStr == rarityStr)
+            {
+                count++;
+            }
+        }
+        return count;
+    }
+
 }

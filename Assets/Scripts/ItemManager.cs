@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class ItemManager : MonoBehaviour
 {
-    public ItemType itemType;
-    public Rarity rarity;
+    [SerializeField] ItemType _itemType;
+    [SerializeField] public Rarity _rarity;
+    int _weightKg;
+    int _valueCost;
 
-    public int weightKg;
-    public int valueCost;
-
+    //  Logical condition for system modularity if it use in runtime 3D space.
     enum MultipleAdded { Yes, No }
     [SerializeField] MultipleAdded _addMultiTimes;
     enum DestroyItemAterInteract { No, Yes }
@@ -17,23 +17,35 @@ public class ItemManager : MonoBehaviour
     enum InteractOutsideInventory { No, Yes }
     [SerializeField] InteractOutsideInventory _interactOutsideInventory;
 
+    //  Poperties to Share item Categories.
+    public string ItemTypeStr { get { return _itemTypeStr; } }
+    public string RarityStr { get { return _rarityStr; } }
+    //  Poperties to Share item attributes.
+    public int WeightKg { get { return _weightKg; } }
+    public int ValueCost { get { return _valueCost; } }
+
     //  private Canditions fields.
     [SerializeField] bool _itemAdded = false;
     [SerializeField] bool _itemEquipped = false;
 
-    //  private item category fields.
-    string itemTypeStr;
-    string rarityStr;
+    //  Main item category Input fields.
+    string _itemTypeStr;
+    string _rarityStr;
 
-    private void OnEnable()
+    private void Start()
     {
+        AssignItemTypeAndRarity();
+        // A simple logic to demonstrate that if object destroyed after interaction so, how we can add it again.
         if (_addMultiTimes == MultipleAdded.Yes)
             _destroyItemAterInteract = DestroyItemAterInteract.No;
 
         if (_destroyItemAterInteract == DestroyItemAterInteract.Yes)
             _addMultiTimes = MultipleAdded.No;
+
     }
 
+    /*
+    //  For testing purpuse.
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Q))
@@ -51,37 +63,37 @@ public class ItemManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Z))
             UseItem();
     }
+    */
 
-    
     void AssignItemTypeAndRarity()
     {
-        switch (itemType)
+        switch (_itemType)
         {
             case ItemType.Consumable:
-                itemTypeStr = "Consumable";
+                _itemTypeStr = "Consumable";
                 break;
 
             case ItemType.Equipment:
-                itemTypeStr = "Equipment";
+                _itemTypeStr = "Equipment";
                 break;
 
             case ItemType.QuestItem:
-                itemTypeStr = "QuestItem";
+                _itemTypeStr = "QuestItem";
                 break;
         }
 
-        switch (rarity)
+        switch (_rarity)
         {
             case Rarity.Common:
-                rarityStr = "Common";
+                _rarityStr = "Common";
                 break;
 
             case Rarity.Rare:
-                rarityStr = "Rare";
+                _rarityStr = "Rare";
                 break;
 
             case Rarity.Legendary:
-                rarityStr = "Legendary";
+                _rarityStr = "Legendary";
                 break;
         }
     }
@@ -94,7 +106,7 @@ public class ItemManager : MonoBehaviour
         _itemAdded = true;
 
         AssignItemTypeAndRarity();
-        InventoryManager.Instance.AddItemInInventory(itemTypeStr, rarityStr, weightKg, valueCost);
+        InventoryManager.Instance.AddItemInInventory(_itemTypeStr, _rarityStr, _weightKg, _valueCost);
 
         if (_destroyItemAterInteract == DestroyItemAterInteract.Yes && _addMultiTimes == MultipleAdded.No)
             Destroy(gameObject);
@@ -102,33 +114,32 @@ public class ItemManager : MonoBehaviour
 
     public void RemoveItem()
     {
-        if (itemType == ItemType.Equipment && _itemEquipped == true)
+        if (_itemType == ItemType.Equipment && _itemEquipped == true)
             return;
 
         AssignItemTypeAndRarity();
-        InventoryManager.Instance.RemoveItemFromInventory(itemTypeStr, rarityStr, weightKg, valueCost);
+        InventoryManager.Instance.RemoveItemFromInventory(_itemTypeStr, _rarityStr, _weightKg, _valueCost);
     }
 
     public void ConsumeItem()
     {
+        AssignItemTypeAndRarity();
+
+        if (_itemType != ItemType.Consumable)
+            return;
+
         if (_interactOutsideInventory == InteractOutsideInventory.No)
         {
             // Find the item in the inventory
-            InventoryItem item = InventoryManager.Instance.FindItemInList(itemTypeStr, rarityStr, weightKg, valueCost);
+            InventoryItem item = InventoryManager.Instance.FindItemInList(_itemTypeStr, _rarityStr, _weightKg, _valueCost);
 
             // terminating method execution.
             if (item == null)
                 return;
         }
-
-
-        if (itemType != ItemType.Consumable)
-            return;
-
-        AssignItemTypeAndRarity();
-
-
         // code underneath from here.
+
+        /// Write your code here.
 
 
 
@@ -143,13 +154,24 @@ public class ItemManager : MonoBehaviour
 
     public void EquipItem()
     {
-        if (itemType != ItemType.Equipment)
+        AssignItemTypeAndRarity();
+
+        if (_itemType != ItemType.Equipment)
             return;
         _itemEquipped = true;
 
-        AssignItemTypeAndRarity();
+        if (_interactOutsideInventory == InteractOutsideInventory.No)
+        {
+            // Find the item in the inventory
+            InventoryItem item = InventoryManager.Instance.FindItemInList(_itemTypeStr, _rarityStr, _weightKg, _valueCost);
 
+            // terminating method execution.
+            if (item == null)
+                return;
+        }
         // code underneath from here.
+
+        /// Write your code here.
 
 
 
@@ -160,12 +182,24 @@ public class ItemManager : MonoBehaviour
 
     public void UseItem()
     {
-        if (itemType != ItemType.QuestItem)
-            return;
-
         AssignItemTypeAndRarity();
 
+        if (_itemType != ItemType.QuestItem)
+            return;
+
+        if (_interactOutsideInventory == InteractOutsideInventory.No)
+        {
+            // Find the item in the inventory
+            InventoryItem item = InventoryManager.Instance.FindItemInList(_itemTypeStr, _rarityStr, _weightKg, _valueCost);
+
+            // terminating method execution.
+            if (item == null)
+                return;
+        }
         // code underneath from here.
+
+        /// Write your code here.
+
 
 
 
