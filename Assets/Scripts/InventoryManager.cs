@@ -17,52 +17,12 @@ public class InventoryItem
     public int valueCost;
 }
 
-//  Divid item into categories.
-[System.Serializable]
-public class ConsumableItem
-{
-    // item type fields.
-    public string rarityStr;
-    // item attribute fields.
-    public int weightKg;
-    public int valueCost;
-
-    public int totalCommon = 0;
-    public int totalRare = 0;
-    public int totalLegendary = 0;
-}
-[System.Serializable]
-public class EquipmentItem
-{
-    // item type fields.
-    public string rarityStr;
-    // item attribute fields.
-    public int weightKg;
-    public int valueCost;
-
-    public int totalCommon = 0;
-    public int totalRare = 0;
-    public int totalLegendary = 0;
-}
-[System.Serializable]
-public class QuestItemItem
-{
-    // item type fields.
-    public string rarityStr;
-    // item attribute fields.
-    public int weightKg;
-    public int valueCost;
-
-    public int totalCommon = 0;
-    public int totalRare = 0;
-    public int totalLegendary = 0;
-}
-
-
 public class InventoryManager : MonoBehaviour
 {
+    //  Singleton class accessor.
     public static InventoryManager Instance;
 
+    //  Our Item Inventory list.
     public List<InventoryItem> inventoryItems;
 
     // File path to save and load the item list
@@ -70,6 +30,7 @@ public class InventoryManager : MonoBehaviour
 
     private void Awake()
     {
+        //  Singleton Design Pattern.
         if (Instance != null)
         {
             Destroy(gameObject);
@@ -79,11 +40,9 @@ public class InventoryManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
+        //  Set json file path.
         filePath = Path.Combine(Application.dataPath, "InventoryData/itemList.json");
-    }
 
-    private void Start()
-    {
         LoadInventory();
     }
 
@@ -95,19 +54,20 @@ public class InventoryManager : MonoBehaviour
 
     public void SaveInventory()
     {
+        //  Save list into json file.
         string json = JsonUtility.ToJson(this);
         File.WriteAllText(filePath, json);
     }
 
     public void LoadInventory()
     {
+        //  Load list if json file already save.
         if (File.Exists(filePath))
         {
             string json = File.ReadAllText(filePath);
             JsonUtility.FromJsonOverwrite(json, this);
         }
     }
-
 
     public void AddItemInInventory(string itemType, string rarity, int weightKg, int valueCost)
     {
@@ -118,7 +78,7 @@ public class InventoryManager : MonoBehaviour
             weightKg = weightKg,
             valueCost = valueCost,
         };
-
+        //  add item in inventory.
         inventoryItems.Add(newItem);
 
         SaveInventory();

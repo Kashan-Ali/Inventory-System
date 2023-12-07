@@ -10,7 +10,6 @@ public class ItemManager : MonoBehaviour
     public int weightKg;
     public int valueCost;
 
-
     enum MultipleAdded { Yes, No }
     [SerializeField] MultipleAdded _addMultiTimes;
     enum DestroyItemAterInteract { No, Yes }
