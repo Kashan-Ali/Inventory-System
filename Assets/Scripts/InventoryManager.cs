@@ -21,28 +21,11 @@ public class InventoryManager : MonoBehaviour
     //  Singleton class accessor.
     public static InventoryManager Instance;
 
-    //  Our Item Inventory list.
+    //  Inventory Item list.
     public List<InventoryItem> inventoryItems;
 
-    /*
-    //  Filter invenmtory items by Types.
-    public int totalConsumable = 0;
-    public int totalEquipment = 0;
-    public int totalQuestItem = 0;
-
-    //  Sort Consumables by Categories.
-    public int consumableCommons = 0;
-    public int consumableRares = 0;
-    public int consumableLegendaries = 0;
-    //  Sort Consumables by Categories.
-    public int EquipmentCommons = 0;
-    public int EquipmenteRares = 0;
-    public int EquipmentLegendaries = 0;
-    //  Sort Consumables by Categories.
-    public int QuestItemCommons = 0;
-    public int QuestItemRares = 0;
-    public int QuestItemLegendaries = 0;
-    */
+    //  Currently Equipped Item.
+    public InventoryItem equippedItem;
 
     // File path to save and load the item list
     private string filePath;
@@ -106,13 +89,20 @@ public class InventoryManager : MonoBehaviour
     public void RemoveItemFromInventory(string itemTypeStr, string rarityStr, int weightKg, int valueCost)
     {
         InventoryItem itemToRemove = FindItemInList(itemTypeStr, rarityStr, weightKg, valueCost);
-
         // Remove the item if found
         if (itemToRemove != null)
         {
             inventoryItems.Remove(itemToRemove);
             SaveInventory();
         }
+    }
+
+    public void EquipItem(string itemTypeStr, string rarityStr, int weightKg, int valueCost)
+    {
+        equippedItem.itemTypeStr = itemTypeStr;
+        equippedItem.rarityStr = rarityStr;
+        equippedItem.weightKg = weightKg;
+        equippedItem.valueCost = valueCost;
     }
 
     public InventoryItem FindItemInList(string itemTypeStr, string rarityStr, int weightKg, int valueCost)
@@ -123,13 +113,28 @@ public class InventoryManager : MonoBehaviour
         );
     }
 
-    // return result count of any filtered item from inventory by its category.
+    // return result count of any filtered items from inventory by its category.
     public int CountItemCategory(string itemTypeStr, string rarityStr)
     {
         int count = 0;
         foreach (var item in inventoryItems)
         {
             if (item.itemTypeStr == itemTypeStr && item.rarityStr == rarityStr)
+            {
+                count++;
+            }
+        }
+        return count;
+    }
+
+
+    // return result count of any exact same items from inventory to stack them.
+    public int CountSameItem(string itemTypeStr, string rarityStr, int weightKg, int valueCost)
+    {
+        int count = 0;
+        foreach (var item in inventoryItems)
+        {
+            if (item.itemTypeStr == itemTypeStr && item.rarityStr == rarityStr && item.weightKg == weightKg && item.valueCost == valueCost)
             {
                 count++;
             }

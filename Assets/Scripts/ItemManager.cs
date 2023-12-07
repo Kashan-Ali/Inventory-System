@@ -26,11 +26,12 @@ public class ItemManager : MonoBehaviour
 
     //  private Canditions fields.
     bool _itemAdded = false;
-    [SerializeField] bool _itemEquipped = false;
 
     //  Main item category Input fields.
     string _itemTypeStr;
     string _rarityStr;
+
+
 
     private void OnEnable()
     {
@@ -41,7 +42,10 @@ public class ItemManager : MonoBehaviour
 
         if (_destroyItemAterInteract == DestroyItemAterInteract.Yes)
             _addMultiTimes = MultipleAdded.No;
+
     }
+
+
 
     /*
     //  For testing purpuse.
@@ -64,6 +68,8 @@ public class ItemManager : MonoBehaviour
     }
     */
 
+    #region Convert Enum Value into String
+    //  Copy Past Enum values in String variables if you when to edit Item categories.
     void AssignItemTypeAndRarity()
     {
         switch (_itemType)
@@ -96,6 +102,7 @@ public class ItemManager : MonoBehaviour
                 break;
         }
     }
+    #endregion
 
     public void AddItem()
     {
@@ -113,9 +120,6 @@ public class ItemManager : MonoBehaviour
 
     public void RemoveItem()
     {
-        if (_itemType == ItemType.Equipment && _itemEquipped == true)
-            return;
-
         AssignItemTypeAndRarity();
         InventoryManager.Instance.RemoveItemFromInventory(_itemTypeStr, _rarityStr, _weightKg, _valueCost);
     }
@@ -157,17 +161,18 @@ public class ItemManager : MonoBehaviour
 
         if (_itemType != ItemType.Equipment)
             return;
-        _itemEquipped = true;
 
-        if (_interactOutsideInventory == InteractOutsideInventory.No)
-        {
-            // Find the item in the inventory
-            InventoryItem item = InventoryManager.Instance.FindItemInList(_itemTypeStr, _rarityStr, _weightKg, _valueCost);
+        // Find the item in the inventory
+        InventoryItem item = InventoryManager.Instance.FindItemInList(_itemTypeStr, _rarityStr, _weightKg, _valueCost);
 
-            // terminating method execution.
-            if (item == null)
-                return;
-        }
+        if (_interactOutsideInventory == InteractOutsideInventory.No && item == null)
+            return;
+
+        if (_interactOutsideInventory == InteractOutsideInventory.Yes && item == null)
+            AddItem();
+
+        InventoryManager.Instance.EquipItem(_itemTypeStr, _rarityStr, _weightKg, _valueCost);
+
         // code underneath from here.
 
         /// Write your code here.
