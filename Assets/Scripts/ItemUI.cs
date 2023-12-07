@@ -37,7 +37,6 @@ public class ItemUI : MonoBehaviour
 
         //  To filter total item of same category from Inventory.
         _countResult = InventoryManager.Instance.CountItemCategory(_itemManager.ItemTypeStr, _itemManager.RarityStr);
-        //  Count number of same items.
         _itemTotalTmp.text = $"Total: {_countResult}";
 
         //  Display item attributes.

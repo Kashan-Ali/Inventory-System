@@ -46,29 +46,6 @@ public class ItemManager : MonoBehaviour
 
     }
 
-
-
-    /*
-    //  For testing purpuse.
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Q))
-            AddItem();
-
-        if (Input.GetKeyDown(KeyCode.E))
-            RemoveItem();
-
-        if (Input.GetKeyDown(KeyCode.C))
-            ConsumeItem();
-
-        if (Input.GetKeyDown(KeyCode.X))
-            EquipItem();
-
-        if (Input.GetKeyDown(KeyCode.Z))
-            UseItem();
-    }
-    */
-
     #region Convert Enum Value into String
     //  Copy Past Enum values in String variables if you when to edit Item categories.
     void AssignItemTypeAndRarity()
