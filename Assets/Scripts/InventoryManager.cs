@@ -105,6 +105,14 @@ public class InventoryManager : MonoBehaviour
         equippedItem.valueCost = valueCost;
     }
 
+    public void UnEquipItem(string itemTypeStr, string rarityStr, int weightKg, int valueCost)
+    {
+        if (equippedItem.itemTypeStr == itemTypeStr && equippedItem.rarityStr == rarityStr &&
+            equippedItem.weightKg == weightKg && equippedItem.valueCost == valueCost)
+            equippedItem = null;
+    }
+
+
     public InventoryItem FindItemInList(string itemTypeStr, string rarityStr, int weightKg, int valueCost)
     {
         // Find the item in the inventory

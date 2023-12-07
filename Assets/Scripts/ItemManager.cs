@@ -26,6 +26,7 @@ public class ItemManager : MonoBehaviour
 
     //  private Canditions fields.
     bool _itemAdded = false;
+    [SerializeField] bool _itemEquipped = false;
 
     //  Main item category Input fields.
     string _itemTypeStr;
@@ -171,7 +172,13 @@ public class ItemManager : MonoBehaviour
         if (_interactOutsideInventory == InteractOutsideInventory.Yes && item == null)
             AddItem();
 
-        InventoryManager.Instance.EquipItem(_itemTypeStr, _rarityStr, _weightKg, _valueCost);
+        _itemEquipped = !_itemEquipped;
+
+        //  if item exact same as equipped item then unequip this item or equip item if not already equipped it;
+        if (_itemEquipped == true)
+            InventoryManager.Instance.EquipItem(_itemTypeStr, _rarityStr, _weightKg, _valueCost);
+        else
+            InventoryManager.Instance.UnEquipItem(_itemTypeStr, _rarityStr, _weightKg, _valueCost);
 
         // code underneath from here.
 
