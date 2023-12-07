@@ -5,9 +5,9 @@ using UnityEngine;
 public class ItemManager : MonoBehaviour
 {
     [SerializeField] ItemType _itemType;
-    [SerializeField] public Rarity _rarity;
-    int _weightKg;
-    int _valueCost;
+    [SerializeField] Rarity _rarity;
+    [SerializeField] int _weightKg;
+    [SerializeField] int _valueCost;
 
     //  Logical condition for system modularity if it use in runtime 3D space.
     enum MultipleAdded { Yes, No }
@@ -32,7 +32,7 @@ public class ItemManager : MonoBehaviour
     string _itemTypeStr;
     string _rarityStr;
 
-    private void Start()
+    private void OnEnable()
     {
         AssignItemTypeAndRarity();
         // A simple logic to demonstrate that if object destroyed after interaction so, how we can add it again.
@@ -41,7 +41,6 @@ public class ItemManager : MonoBehaviour
 
         if (_destroyItemAterInteract == DestroyItemAterInteract.Yes)
             _addMultiTimes = MultipleAdded.No;
-
     }
 
     /*

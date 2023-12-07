@@ -21,12 +21,9 @@ public class ItemUI : MonoBehaviour
     //  Main input.
     int _countResult;
 
-    private void Start()
+    private void OnEnable()
     {
         _itemManager = GetComponent<ItemManager>();
-
-        //  To filter total item of same category from Inventory.
-        _countResult = InventoryManager.Instance.CountItemCategory(_itemManager.ItemTypeStr, _itemManager.RarityStr);
 
         UIUpdata();
     }
@@ -37,8 +34,12 @@ public class ItemUI : MonoBehaviour
         _itemTypeTmp.text = _itemManager.ItemTypeStr;
         _itemRarityTmp.text = _itemManager.RarityStr;
 
+
+        //  To filter total item of same category from Inventory.
+        _countResult = InventoryManager.Instance.CountItemCategory(_itemManager.ItemTypeStr, _itemManager.RarityStr);
         //  Count number of same items.
         _itemTotalTmp.text = $"Total: {_countResult}";
+
         //  Display item attributes.
         _itemWeightTmp.text = $"Weight: {_itemManager.WeightKg}";
         _itemValueTmp.text = $"Value: {_itemManager.ValueCost}";
