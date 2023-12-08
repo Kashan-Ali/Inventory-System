@@ -27,11 +27,13 @@ public class ItemManager : MonoBehaviour
     //  private Canditions fields.
     bool _itemAdded = false;
     [SerializeField] bool _itemEquipped = false;
+    public bool ItemEquipped { get { return _itemEquipped; } set { _itemEquipped = value; } }
+    //  to get equipable item manager scripts for unequip logic to work properly.
+    [SerializeField] ItemManager[] AllItemManagers;
 
     //  Main item category Input fields.
     string _itemTypeStr;
     string _rarityStr;
-
 
 
     private void OnEnable()
@@ -44,6 +46,22 @@ public class ItemManager : MonoBehaviour
         if (_destroyItemAterInteract == DestroyItemAterInteract.Yes)
             _addMultiTimes = MultipleAdded.No;
 
+        //  to refine equip / unquip logic more on game load.
+        CheckEquipStateOnLoad();
+    }
+
+    void CheckEquipStateOnLoad()
+    {
+        AllItemManagers = null;
+        //  only equippable item get other equippable item manager scripts.
+        if (_itemType == ItemType.Equipment)
+        {
+            AllItemManagers = FindObjectsOfType<ItemManager>();
+
+            //  To is Item already equip when game data load again if. 
+            if (InventoryManager.Instance.ChekEquippedItem(_itemTypeStr, _rarityStr, _weightKg, _valueCost))
+                _itemEquipped = true;
+        }
     }
 
     #region Convert Enum Value into String
@@ -140,9 +158,27 @@ public class ItemManager : MonoBehaviour
             Destroy(gameObject);
     }
 
-    public void EquipItem()
+    // Unuquip All other Items and preserve equip state of current equipped item.
+    void UnEquipAllItems()
     {
-        AssignItemTypeAndRarity();
+        //  store current item equip state.  
+        bool currentEquipped = _itemEquipped;
+
+        //  unequip all othen items.
+        for (int i = 0; i < AllItemManagers.Length; i++)
+        {
+            if (AllItemManagers[i].ItemTypeStr == "Equipment")
+            {
+                AllItemManagers[i].ItemEquipped = false;
+            }
+        }
+
+        //  reasign current item equip state.
+        _itemEquipped = currentEquipped;
+    }
+
+    public void EquipUnequipItem()
+    {
 
         if (_itemType != ItemType.Equipment)
             return;
@@ -156,6 +192,10 @@ public class ItemManager : MonoBehaviour
         if (_interactOutsideInventory == InteractOutsideInventory.Yes && item == null)
             AddItem();
 
+        //  unequip all othen items.
+        UnEquipAllItems();
+
+        //  toggle equip state on every time method call.
         _itemEquipped = !_itemEquipped;
 
         //  if item exact same as equipped item then unequip this item or equip item if not already equipped it;

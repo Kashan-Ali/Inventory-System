@@ -150,4 +150,12 @@ public class InventoryManager : MonoBehaviour
         return count;
     }
 
+    public bool ChekEquippedItem(string itemTypeStr, string rarityStr, int weightKg, int valueCost)
+    {
+        if (equippedItem.itemTypeStr == itemTypeStr && equippedItem.rarityStr == rarityStr && equippedItem.weightKg == weightKg && equippedItem.valueCost == valueCost)
+            return true;
+        else
+            return false;
+    }
+
 }
